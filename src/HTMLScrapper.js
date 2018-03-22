@@ -1,7 +1,7 @@
 const { JSDOM } = require('jsdom');
 const cheerio = require('cheerio');
 
-class Navigation {
+class HTMLScrapper {
 
   constructor({ model, beforeOpen }) {
     this.model = model;
@@ -57,4 +57,4 @@ class Navigation {
   }
 }
 
-module.exports = Navigation;
+module.exports = HTMLScrapper;

@@ -1,22 +1,32 @@
-const { Navigation } = require('../index');
+const { HTMLScrapper } = require('../index');
 
-const scrapper = new Navigation({
+function removeBlank(elt) {
+    return elt.text().replace(/\\n/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+const scrapper = new HTMLScrapper({
     model: {
         addressee: { // OK
             name: "#DestRem tr:nth-child(1) > td:nth-child(1) > span",
             cpf: "#DestRem tr:nth-child(2) > td:nth-child(1) > span"
         },
         payee: {
-            name: "#Emitente tr:nth-child(1) > td:nth-child(2) > span", // OK
-            socialName: "#Emitente tr:nth-child(1) > td:nth-child(1) > span", // OK
-            cnpj: "#Emitente tr:nth-child(2) > td:nth-child(1) > span", // OK
-            phone: "#Emitente tr:nth-child(4) > td:nth-child(2) > span", // OK
+            name: "#Emitente tr:nth-child(1) > td:nth-child(2) > span",
+            socialName: "#Emitente tr:nth-child(1) > td:nth-child(1) > span",
+            cnpj: "#Emitente tr:nth-child(2) > td:nth-child(1) > span",
+            phone: "#Emitente tr:nth-child(4) > td:nth-child(2) > span",
             address: {
-                street: "#Emitente tr:nth-child(2) > td:nth-child(2) > span", // REMOVER BRANCO
-                neighborhood: "#Emitente tr:nth-child(3) > td:nth-child(1) > span", // OK
-                city: "#Emitente tr:nth-child(4) > td:nth-child(1) > span", // REMOVER BRANCO
-                state: "#Emitente tr:nth-child(5) > td:nth-child(1) > span", // OK
-                cep: "#Emitente tr:nth-child(3) > td:nth-child(2) > span" // OK
+                street: {
+                    _$: "#Emitente tr:nth-child(2) > td:nth-child(2) > span",
+                    _formatter: removeBlank,
+                },
+                neighborhood: "#Emitente tr:nth-child(3) > td:nth-child(1) > span",
+                city: {
+                    _$: "#Emitente tr:nth-child(4) > td:nth-child(1) > span",
+                    _formatter: removeBlank,
+                },
+                state: "#Emitente tr:nth-child(5) > td:nth-child(1) > span",
+                cep: "#Emitente tr:nth-child(3) > td:nth-child(2) > span"
             }
         },
         products: { // OK
@@ -41,8 +51,14 @@ const scrapper = new Navigation({
         },
         payment: {
             value: "#Cobranca tr:nth-child(2) > td:nth-child(2) span", // OK
-            mode: "#Cobranca tr:nth-child(2) > td:nth-child(1) span", // REMOVER BRANCO
-            brand: "#Cobranca tr:nth-child(2) > td:nth-child(5) span" // TESTAR
+            mode: {
+                _$: "#Cobranca tr:nth-child(2) > td:nth-child(1) span",
+                _formatter: removeBlank,
+            },
+            brand: {
+                _$: "#Cobranca tr:nth-child(2) > td:nth-child(5) span",
+                _formatter: removeBlank
+            }
         }
     }
 });
