@@ -1,6 +1,6 @@
 {
   "name": "@essetwide/html-scrapper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A HTML to JSON scrapper based on a Headless Browser navigation.",
   "keywords": [
     "HTML",

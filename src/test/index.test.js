@@ -4,6 +4,10 @@ function removeBlank(elt) {
     return elt.text().replace(/\\n/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function toNumber(elt) {
+    return parseFloat(elt.text().replace(',', '.'));
+}
+
 const scrapper = new HTMLScrapper({
     model: {
         addressee: { // OK
@@ -39,18 +43,33 @@ const scrapper = new HTMLScrapper({
 
                 cfop: "td > table:first-child tr:nth-child(2) > td:nth-child(2) > span",
 
-                discount: "td > table:first-child tr:nth-child(3) > td:nth-child(1) > span",
+                discount: {
+                    _$: "td > table:first-child tr:nth-child(3) > td:nth-child(1) > span",
+                    _formatter: toNumber,
+                },
 
                 commercialEAN: "td > table:nth-of-type(2) tr:nth-child(2) > td:nth-child(1) > span",
-                price: "td > table:nth-of-type(2) tr:nth-child(4) > td:nth-child(1) > span"
+                price: {
+                    _$: "td > table:nth-of-type(2) tr:nth-child(4) > td:nth-child(1) > span",
+                    _formatter: toNumber,
+                }
             },
             description: ".fixo-prod-serv-descricao span",
-            amount: ".fixo-prod-serv-qtd span",
+            amount: {
+                _$: ".fixo-prod-serv-qtd span",
+                _formatter: toNumber
+            },
             unity: ".fixo-prod-serv-uc span",
-            total: ".fixo-prod-serv-vb span",
+            total: {
+                _$: ".fixo-prod-serv-vb span",
+                _formatter: toNumber,
+            },
         },
         payment: {
-            value: "#Cobranca tr:nth-child(2) > td:nth-child(2) span", // OK
+            value: {
+                _$: "#Cobranca tr:nth-child(2) > td:nth-child(2) span",
+                _formatter: toNumber,
+            }, // OK
             mode: {
                 _$: "#Cobranca tr:nth-child(2) > td:nth-child(1) span",
                 _formatter: removeBlank,

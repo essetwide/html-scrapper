@@ -26,7 +26,13 @@ class HTMLScrapper {
               }
             }
             if (inModel[key]['_formatter'] && inModel[key]['_$']) {
-              outModel[key] = inModel[key]['_formatter']($(inModel[key]['_$']));
+              if (!!scope) {
+                  const list = $(scope);
+                  for (let i = 0; i < list.length; i++) {
+                      outModel[i] = outModel[i] || {};
+                      outModel[i][key] = inModel[key]['_formatter']($(inModel[key]['_$'], list[i]));
+                  }
+              } else outModel[key] = inModel[key]['_formatter']($(inModel[key]['_$']));
             } else for (let innerKey in inModel[key]) {
               if (innerKey !== '_scope' && key !== '_merge') {
                 outModel[key] = outModel[key] || (!!inModel[key]['_scope'] ? [] : {});
