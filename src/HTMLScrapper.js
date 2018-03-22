@@ -29,7 +29,7 @@ class HTMLScrapper {
               outModel[key] = inModel[key]['_formatter']($(inModel[key]['_$']));
             } else for (let innerKey in inModel[key]) {
               if (innerKey !== '_scope' && key !== '_merge') {
-                outModel[key] = outModel[key] || {};
+                outModel[key] = outModel[key] || (!!inModel[key]['_scope'] ? [] : {});
                 parseIntoObject(innerKey, inModel[key], outModel[key], inModel[key]['_scope']);
               }
             }
